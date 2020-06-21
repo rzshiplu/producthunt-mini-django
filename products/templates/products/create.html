@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Create Product{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'select2/dist/css/select2.min.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="container" style="margin-bottom: 100px;">
+        <h1>Create Product</h1>
+
+        {% if form.errors %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <ul>
+                Errors:
+                {% for field in form %}
+                    {{ field.errors }}
+                {% endfor %}
+            </ul>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% endif %}
+
+        {% if submit_success %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>{{ submit_success }}</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% endif %}
+
+        <form method="post" action="{% url 'create' %}" enctype="multipart/form-data" novalidate>
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="form-group">
+                {{ field.label_tag }} {{ field }}
+            </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-primary">Create</button>
+        </form>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'select2/dist/js/select2.full.min.js' %}"></script>
+<script>
+$(document).ready(function(){
+    $("#id_hunter").select2();
+    $("#s").select2();
+});
+</script>
+{% endblock %}

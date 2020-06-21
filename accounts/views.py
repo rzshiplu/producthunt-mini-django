@@ -35,8 +35,10 @@ def login(request):
     if request.method == 'POST':
         username = request.POST['username'].strip()
         password = request.POST['password'].strip()
+        next_url = request.POST['next_url'].strip()
         context = {
             'username': username,
+            'next_url': next_url,
         }
 
         if username == '' or password == '':
@@ -46,12 +48,12 @@ def login(request):
         user = auth.authenticate(request, username=username, password=password)
         if user is not None:
             auth.login(request, user)
-            return redirect('home')
+            return redirect(next_url)
         else:
             context['error'] = 'Invalid username or password.'
             return render(request, 'accounts/login.html', context)
     else:
-        return render(request, 'accounts/login.html')
+        return render(request, 'accounts/login.html', {'next_url': request.GET.get('next', 'home')})
 
 
 def logout(request):

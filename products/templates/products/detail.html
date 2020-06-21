@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}Product Detail{% endblock %}
+
+{% block content %}
+    <div class="container" style="margin-bottom: 100px;">
+        <div class="row">
+            <div class="col-2">
+                <img src="{{ product.icon.url }}" class="img-fluid" alt="{{ product.title }}">
+            </div>
+            <div class="col-10">
+                <a href="{{ product.url }}" target="_blank"><h3>{{ product.title }}</h3></a>
+            </div>
+        </div>
+
+        <div class="row" style="margin-top:10px;">
+            <div class="col-8">
+                <img src="{{ product.image.url }}" class="img-fluid" alt="{{ product.title }}">
+            </div>
+            <div class="col-4">
+                <a href="javascript:document.getElementById('form_upvote_{{ product.id }}').submit();" class="btn btn-primary btn-lg upvote-btn">
+                    <span class="oi oi-arrow-thick-top" style="margin-right: 5px;"></span>Upvote {{ product.votes_total }}
+                </a>
+                <form id="form_upvote_{{ product.id }}" method="post" action="{% url 'upvote' product.id %}">
+                {% csrf_token %}
+                <input type="hidden" name="redirect_after" value="{{ request.path }}" />
+            </form>
+            </div>
+        </div>
+
+        <div class="row" style="margin-top:10px;">
+            <div class="col-4">
+                <h4><span class="oi oi-magnifying-glass"></span> Hunted by {{ product.hunter.username }}</h4>
+            </div>
+            <div class="col-4 text-right">
+                <h4><span class="oi oi-clock"></span> {{ product.pub_date_pretty }}</h4>
+            </div>
+        </div>
+
+        <div class="row" style="margin-top:10px;">
+            <div class="col-8 text-justify">
+                <p>{{ product.body|linebreaks }}</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

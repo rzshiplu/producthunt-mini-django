@@ -1,7 +1,27 @@
 {% extends 'base.html' %}
-
+{{ request.path }}
 {% block content %}
-    <div class="container">
-        <h1>Welcome to ProductHunt</h1>
+<div class="container">
+    {% for product in products %}
+    <div class="row">
+        <div class="col-2">
+            <img src="{{ product.icon.url }}" class="img-fluid" />
+        </div>
+        <div class="col-6">
+            <a href="{% url 'product_detail' product.id %}"><h2>{{ product.title }}</h2></a>
+            <p>{{ product.body|truncatechars:200|linebreaks }}</p>
+        </div>
+        <div class="col-4">
+            <a href="javascript:document.getElementById('form_upvote_{{ product.id }}').submit();" class="btn btn-primary btn-lg upvote-btn">
+                <span class="oi oi-arrow-thick-top" style="margin-right: 5px;"></span>Upvote {{ product.votes_total }}
+            </a>
+            <form id="form_upvote_{{ product.id }}" method="post" action="{% url 'upvote' product.id %}">
+                {% csrf_token %}
+                <input type="hidden" name="redirect_after" value="{{ request.path }}" />
+            </form>
+        </div>
     </div>
+    <hr />
+    {% endfor %}
+</div>
 {% endblock %}
