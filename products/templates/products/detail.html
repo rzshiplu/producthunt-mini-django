@@ -21,6 +21,12 @@
                 <a href="javascript:document.getElementById('form_upvote_{{ product.id }}').submit();" class="btn btn-primary btn-lg upvote-btn">
                     <span class="oi oi-arrow-thick-top" style="margin-right: 5px;"></span>Upvote {{ product.votes_total }}
                 </a>
+                <br />
+                {% if request.user.is_authenticated and request.user == product.hunter %}
+                <a href="{% url 'edit' product.id %}" class="btn btn-success btn-lg" style="margin-top:10px;">
+                    <span class="oi oi-task"></span> Edit
+                </a>
+                {% endif %}
                 <form id="form_upvote_{{ product.id }}" method="post" action="{% url 'upvote' product.id %}">
                 {% csrf_token %}
                 <input type="hidden" name="redirect_after" value="{{ request.path }}" />

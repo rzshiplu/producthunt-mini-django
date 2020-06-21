@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Create Product{% endblock %}
+{% block title %}Edit Product{% endblock %}
 
 {% block styles %}
 <link rel="stylesheet" href="{% static 'select2/dist/css/select2.min.css' %}">
@@ -9,7 +9,7 @@
 
 {% block content %}
     <div class="container" style="margin-bottom: 100px;">
-        <h1>Create Product</h1>
+        <h1>Edit Product</h1>
 
         {% if form.errors %}
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -34,14 +34,14 @@
         </div>
         {% endif %}
 
-        <form method="post" action="{% url 'create' %}" enctype="multipart/form-data" novalidate>
+        <form method="post" action="{% url 'edit' product.id %}" enctype="multipart/form-data" novalidate>
             {% csrf_token %}
             {% for field in form %}
             <div class="form-group">
                 {{ field.label_tag }} {{ field }}
             </div>
             {% endfor %}
-            <button type="submit" class="btn btn-primary">Create</button>
+            <button type="submit" class="btn btn-primary">Update</button>
         </form>
     </div>
 {% endblock %}
